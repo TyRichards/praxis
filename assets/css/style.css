@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap');
+
+* {
+    font-family: 'JetBrains Mono', monospace !important;
+}
+
+body {
+    background: #000;
+    color: #fff;
+}
+
+.grid-box {
+    aspect-ratio: 1;
+    border: 1px solid #1a1a1a;
+    transition: all 0.2s ease;
+}
+
+.grid-box:hover {
+    background: #040404;
+    border-color: #1a1a1a;
+}
+
+.grid-box:hover svg {
+    stroke: #fff;
+}
+
+svg {
+    stroke: #444;
+    transition: stroke 0.2s ease;
+}
+
+/* Hide scrollbar for mobile menu */
+#mobile-menu {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#mobile-menu::-webkit-scrollbar {
+    display: none;
+}
+
+/* Mobile/Tablet styles */
+@media (max-width: 1024px) {
+    #current-date {
+        display: none;
+    }
+    
+    .title-container {
+        position: static !important;
+        transform: none !important;
+        text-align: left !important;
+        margin-left: 0 !important;
+    }
+    
+    .grid-box svg {
+        width: 50px !important;
+        height: 50px !important;
+    }
+}

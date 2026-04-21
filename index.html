@@ -5,92 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Praxis</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap');
-        
-        * {
-            font-family: 'JetBrains Mono', monospace !important;
-        }
-        
-        body {
-            background: #000;
-            color: #fff;
-        }
-        
-        .grid-box {
-            aspect-ratio: 1;
-            border: 1px solid #1a1a1a;
-            transition: all 0.2s ease;
-        }
-        
-        .grid-box:hover {
-            background: #0a0a0a;
-            border-color: #222;
-        }
-        
-        .grid-box:hover svg {
-            stroke: #fff;
-        }
-        
-        svg {
-            stroke: #444;
-            transition: stroke 0.2s ease;
-        }
-        
-        /* Mobile/Tablet styles */
-        @media (max-width: 1024px) {
-            #current-date {
-                display: none;
-            }
-            
-            .title-container {
-                position: static !important;
-                transform: none !important;
-                text-align: left !important;
-                margin-left: 0 !important;
-            }
-            
-            .grid-box svg {
-                width: 50px !important;
-                height: 50px !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="flex items-center justify-between px-6 bg-black border-b border-neutral-900" style="height: 150px;">
-        <!-- Date -->
-        <div id="current-date" class="text-sm text-neutral-500 w-40">
-            <!-- JavaScript will populate this -->
-        </div>
-        
-        <!-- Centered Title -->
-        <div class="title-container absolute left-1/2 transform -translate-x-1/2 text-center">
-            <h1 class="text-6xl font-light tracking-tight">Praxis</h1>
-            <p class="text-sm font-light text-neutral-500 mt-1">Curated recommendations from a digital minimalist.</p>
-        </div>
-        
-        <!-- Hamburger -->
-        <button class="w-8 h-8 flex flex-col justify-center items-center gap-2">
-            <span class="block w-7 h-0.5 bg-neutral-400"></span>
-            <span class="block w-7 h-0.5 bg-neutral-400"></span>
-            <span class="block w-7 h-0.5 bg-neutral-400"></span>
-        </button>
-    </header>
+    <!-- Header Container -->
+    <div id="header-container"></div>
 
     <!-- Main Grid -->
     <main class="flex-1">
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             
             <!-- Phones -->
-            <div class="grid-box flex flex-col items-center justify-center gap-6 cursor-pointer">
+            <a href="phones/" class="grid-box flex flex-col items-center justify-center gap-6 cursor-pointer">
                 <svg width="135" height="135" viewBox="0 0 24 24" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="7" y="2" width="10" height="20" rx="2"/>
                     <path d="M11 18h2"/>
                 </svg>
                 <span class="text-2xl font-light">Phones</span>
-            </div>
+            </a>
 
             <!-- Computers -->
             <div class="grid-box flex flex-col items-center justify-center gap-6 cursor-pointer">
@@ -161,9 +93,9 @@
             <div class="grid-box flex flex-col items-center justify-center gap-6 cursor-pointer">
                 <svg width="135" height="135" viewBox="0 0 24 24" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2v20"/>
-                    <path d="M2 12h20"/>
-                    <path d="M5 5l14 14"/>
-                    <path d="M19 5L5 19"/>
+                    <path d="M7 7h10"/>
+                    <path d="M5 12h14"/>
+                    <path d="M8 19l4-3 4 3"/>
                 </svg>
                 <span class="text-2xl font-light">Church</span>
             </div>
@@ -184,7 +116,7 @@
                     <circle cx="12" cy="6" r="4"/>
                     <path d="M12 10v4"/>
                     <path d="M8 14h8v8H8z"/>
-                    <circle cx="12" cy="4" r="1" fill="currentColor"/>
+                    <circle cx="12" cy="4" r="1"/>
                 </svg>
                 <span class="text-2xl font-light">Icons</span>
             </div>
@@ -265,23 +197,82 @@
         </div>
     </main>
 
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
     <script>
-        // Dynamic date for static HTML
-        function updateDate() {
-            const now = new Date();
-            const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-            const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+        // Load header partial
+        fetch('partials/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                
+                // Re-initialize after header loads
+                initializeHeader();
+            })
+            .catch(err => console.error('Error loading header:', err));
+
+        // Load footer partial
+        fetch('partials/footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer-container').innerHTML = html;
+            })
+            .catch(err => console.error('Error loading footer:', err));
+
+        function initializeHeader() {
+            // Dynamic date for static HTML
+            function updateDate() {
+                const now = new Date();
+                const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+                const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+                
+                const month = months[now.getMonth()];
+                const day = now.getDate();
+                const year = now.getFullYear().toString().slice(-2);
+                const weekday = days[now.getDay()];
+                
+                const dateString = `${month}.${day}.${year} ${weekday}`;
+                document.getElementById('current-date').textContent = dateString;
+            }
             
-            const month = months[now.getMonth()];
-            const day = now.getDate();
-            const year = now.getFullYear().toString().slice(-2);
-            const weekday = days[now.getDay()];
+            updateDate();
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuLines = document.querySelectorAll('.menu-line');
+            const menuItems = document.querySelectorAll('.menu-item');
             
-            const dateString = `${month}.${day}.${year} ${weekday}`;
-            document.getElementById('current-date').textContent = dateString;
+            menuToggle.addEventListener('click', () => {
+                const isOpen = !mobileMenu.classList.contains('hidden');
+                
+                if (isOpen) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex');
+                    menuLines[0].style.transform = 'none';
+                    menuLines[1].style.opacity = '1';
+                    menuLines[2].style.transform = 'none';
+                } else {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenu.classList.add('flex');
+                    menuLines[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    menuLines[1].style.opacity = '0';
+                    menuLines[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+                }
+            });
+
+            // Close menu when clicking a menu item
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex');
+                    menuLines[0].style.transform = 'none';
+                    menuLines[1].style.opacity = '1';
+                    menuLines[2].style.transform = 'none';
+                });
+            });
         }
-        
-        updateDate();
     </script>
 </body>
 </html>
